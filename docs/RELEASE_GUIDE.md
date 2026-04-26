@@ -60,8 +60,8 @@ See `docs/PUBLIC_RELEASE_STRATEGY.md` for one-time setup instructions.
 To publish, push a version tag:
 ```powershell
 # (after ensuring main is ready)
-git tag v0.2.0
-git push origin v0.2.0
+git tag v0.2.1
+git push origin v0.2.1
 ```
 
 The `public-release.yml` workflow will then:
@@ -107,7 +107,7 @@ uv sync
 .\scripts\build_windows.ps1 -SkipTests -SkipRuff
 
 # Override version
-.\scripts\build_windows.ps1 -Version 0.2.0-dev
+.\scripts\build_windows.ps1 -Version 0.2.1-dev
 ```
 
 Output: `dist\FORA-X-<version>-portable-win64.zip`
@@ -234,5 +234,4 @@ The MSI can be built locally and attached manually via the GitHub Release edit U
 2. Tag name stripped of `v` prefix (in GitHub Actions release workflow)
 3. `version` field from `pyproject.toml`
 4. Fallback: `0.0.0`
-
 
