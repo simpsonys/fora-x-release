@@ -15,16 +15,17 @@ User request
 FORA Forge v1 does **not** require external AI APIs. It provides deterministic templates and a pasted/generated JSON workflow so users can use any external AI tool manually while FORA-X remains AI-optional at runtime.
 
 FORA Forge AI Provider Adapters v1 add an optional provider path. The default
-provider is a deterministic offline `mock` provider; external provider access is
-optional and disabled unless configured through environment variables. Provider
-output still becomes only a DraftArtifact and must pass the same validation
-pipeline.
+provider is a deterministic offline `mock` provider. The global provider policy
+defaults to `offline`, so external network providers are disabled before any
+prompt, request, provider, or HTTP client is constructed. Provider output still
+becomes only a DraftArtifact and must pass the same validation pipeline.
 
 ## Core Principles
 
 - Forge generates artifacts, not unchecked runtime actions.
 - AI is optional and not required at runtime.
-- External AI provider integration is future work.
+- External AI provider access is optional, policy-gated, and disabled by
+  default.
 - Generated profiles are data-only.
 - Generated themes are data-only.
 - Generated plugins may contain Python code but are never executed during generation, validation, packaging, inspection, or installation.
@@ -84,6 +85,20 @@ AI provider settings live at `%APPDATA%/FORA-X/Settings/ai_providers.json`.
 The settings file stores provider ids, labels, model names, endpoint URLs, and
 environment variable names for API keys. It should not store raw API keys.
 
+The top-level policy defaults to:
+
+- `mode: offline`
+- `external_ai_enabled: false`
+- `allow_network_providers: false`
+- `allow_local_http_provider: true`
+- `send_file_contents_by_default: false`
+
+With this policy, OpenAI, Anthropic, Gemini, and other external providers are
+blocked before request construction. FORA-X does not fall back to `mock`
+silently when a selected external provider is blocked. The offline mock,
+deterministic templates, copyable prompts, pasted JSON, Forge Plan, Pack, and
+Profile flows remain first-class.
+
 Commands:
 
 - `generate_forge_artifact_with_ai`
@@ -93,12 +108,22 @@ Commands:
 - `generate_plan_with_ai`
 - `open_ai_provider_settings`
 - `reload_ai_provider_settings`
+- `show_ai_policy_status`
+- `enable_external_ai`
+- `disable_external_ai`
+- `set_ai_mode_offline`
+- `set_ai_mode_external_optional`
 - `test_ai_provider`
 
 Generation sends only the user's request and schema constraints by default. It
 does not send selected file contents, full file trees, secrets, credentials, or
 local private paths. Generated output is previewed only; export/install/execute
 remain separate validated steps.
+
+Provider selection separates Offline / deterministic, Local-only, and External
+providers. External providers are not offered as a normal active generation path
+while offline policy blocks them. `enable_external_ai` and
+`set_ai_mode_external_optional` require explicit user confirmation.
 
 See [FORA_FORGE_AI_PROVIDERS.md](FORA_FORGE_AI_PROVIDERS.md).
 
@@ -145,7 +170,8 @@ Forge output is reviewed before use:
 - Themes/plugins install through FORA Pack.
 - Plans use FORA Plan validation and preview.
 
-Future AI providers must produce the same DraftArtifact or FileOperationPlan data and cannot bypass these paths.
+AI providers must produce the same DraftArtifact or FileOperationPlan data,
+respect provider policy, and cannot bypass these paths.
 
 Generated plugin tests use temporary `.fora-plugin` bundles to verify that
 Forge/Pack inspection and installation do not import plugin code. Controlled
