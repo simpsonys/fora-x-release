@@ -32,9 +32,13 @@ FORA-X is designed to keep your hands on the keyboard:
 - **Left Arrow**: Go back in your navigation history.
 - **Backspace**: Go to the parent folder (if no search filter is active).
 - **Tab**: Switch focus between the left and right panes.
-- **F3**: Open the **Go To Directory** prompt. Start typing a path or favorite name and press Enter.
+- **F3** or **Alt+D**: Open the **Go To Directory** prompt. Start typing a path or favorite name and press Enter.
 - **Shift + Drive Letter**: Jump directly to a drive root (e.g., `Shift+C` for C:\).
-- **Ctrl+B**: Toggle the optional Navigation Sidebar (Folder Tree and Favorites).
+- **Ctrl+B**: Toggle the optional keyboard-focusable Navigation Tree Pane (Folder Tree and Favorites).
+- **Ctrl+Shift+B**: Focus the Navigation Tree Pane.
+- **Ctrl+E**: Enter Export mode for file list/tree report and path/name copy actions.
+- **Ctrl+Shift+F**: Enter Filter mode for keyboard column filters.
+- **Ctrl+Shift+G**: Enter Git mode for curated TortoiseGit actions.
 
 ## Common File Operations
 
@@ -54,6 +58,7 @@ FORA-X is designed to keep your hands on the keyboard:
   - Press `F3` and type the name of your favorite.
   - Search for favorites directly in the Command Palette.
 - **Manage Favorites**: Favorites are stored locally in your settings folder. You can remove them via the Command Palette or by editing `favorites.json`.
+- Favorites sort alphabetically by label. History remains separate and most-recent-first.
 
 ## Command Palette
 
@@ -81,6 +86,8 @@ The labels at the bottom correspond to your function keys:
 - **Flat View**: See all files within a folder structure as a single list.
 - **Archive/Extract**: Right-click or use the Command Palette to ZIP files or extract archives.
 - **Reports**: Generate text-based "Tree" or "List" reports of your directories.
+  `tree_view` is a report/export command, not the optional Navigation Sidebar tree.
+- **Navigation Tree Pane**: Optional tree pane for keyboard navigation. First pass supports Go, Copy Path, Add Favorite, and Reveal; Delete/Move/Copy-to-pane are deferred.
 
 ## Keyboard Shortcuts
 
@@ -92,13 +99,17 @@ The labels at the bottom correspond to your function keys:
 | `Left` | Go back |
 | `Backspace` | Go up to parent |
 | `F2` | Rename |
-| `F3` | Go To Directory |
+| `F3` / `Alt+D` | Go To Directory |
 | `F6` | New File |
 | `F7` | New Folder |
+| `Ctrl+E` | Export mode |
+| `Ctrl+Shift+F` | Filter mode |
+| `Ctrl+Shift+G` | Git mode |
 | `Delete` | Delete to Recycle Bin |
 | `Ctrl+Right/Left` | Copy to other pane |
 | `Alt+Right/Left` | Move to other pane |
 | `Ctrl+B` | Toggle Navigation Sidebar |
+| `Ctrl+Shift+B` | Focus Navigation Sidebar |
 | `Ctrl+Shift+P` | Open Command Palette |
 | `Ctrl+Z` | Undo last operation |
 
@@ -110,6 +121,10 @@ FORA-X stores your personal configuration in:
 - `key_bindings.json`: Customize your shortcuts.
 - `favorites.json`: Your saved locations.
 - `action_bar.json`: Customize the bottom buttons.
+
+Action Bar hints are structured so displayed keys are intended to match the
+configured shortcuts. `Alt+D` is Go To Directory; drive jumps use
+`Shift + Drive Letter`.
 
 You can quickly open this folder by typing "Open settings folder" in the Command Palette.
 

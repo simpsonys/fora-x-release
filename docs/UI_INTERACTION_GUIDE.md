@@ -21,7 +21,36 @@ FORA-X is keyboard-first and compact by default. Future UI work should follow th
 
 - Ctrl/Alt UI hints must reset on key release.
 - Ctrl/Alt UI hints must also reset on focus loss, dialog open, command palette open, or application deactivation.
+- If Ctrl and Shift are both held, prefer `ctrl+shift`, then `shift`, then `ctrl`, then `default`.
 - If Ctrl and Alt are both held, prefer `ctrl_alt`, then `ctrl`, then `alt`, then `default`.
+- `Shift` alone shows dynamic drive-jump hints; `Ctrl+Shift` shows the static `ctrl+shift` Action Bar config (Filter / Git / Palette / Tree).
+- Missing `ctrl+shift` defaults are injected at load time so existing user settings receive the hints without reinstalling.
+- Modifier state must not leak into the pane filter.
+
+## Action Bar Layout Rule
+
+- Keep Action Bar left-aligned. Do not center-align hint buttons.
+- Action Bar must not force the main window to a minimum width equal to all hints combined.
+- Each button sets `minimumWidth(0)` so the parent window can resize freely.
+- Items carry an optional `priority` field (1=high, 2=medium, 3=low, default=2).
+- When horizontal space is insufficient, lower-priority buttons are hidden first.
+  High-priority items (Rename, GoTo, New File/Folder, active Tool Mode actions) remain visible.
+  Low-priority items (VSCode, Terminal, Explorer, Flat) may be hidden.
+- Do not hide buttons below one visible button.
+- Action Bar is primarily a hint strip; clickable buttons are a fallback discovery surface.
+
+## Tool Mode Rule
+
+- Tool Modes are JSON-configurable command groups, not hardcoded feature menus.
+- A Tool Mode trigger enters a temporary keyboard mode before pane filter routing.
+- While a Tool Mode is active, the Action Bar shows only that mode's actions plus `Esc` cancel.
+- Action keys execute mapped registered commands and then exit the mode.
+- `Esc`, focus loss, modal dialogs, or window deactivation exit the mode.
+- Unknown keys are consumed by the active Tool Mode and must not append to the pane filter.
+- Default modes include Export (`Ctrl+E`), Filter (`Ctrl+Shift+F`), and Git (`Ctrl+Shift+G`).
+- Filter mode provides keyboard access to column filters.
+- Git mode uses curated TortoiseGit commands and must not import the full Explorer shell context menu.
+- The Command Palette remains the complete command discovery surface.
 
 ## Semantic Emoji/Icon Rule
 
@@ -32,6 +61,7 @@ FORA-X is keyboard-first and compact by default. Future UI work should follow th
 
 ## fman-Like GoTo Rule
 
+- `F3` and `Alt+D` should both open Go To Directory.
 - Path prompts should show candidates.
 - `Up`/`Down` navigates candidates.
 - `Tab` completes the selected candidate or common prefix.
@@ -51,13 +81,27 @@ FORA-X is keyboard-first and compact by default. Future UI work should follow th
 
 ## Optional Navigation Sidebar Rule
 
-- The default UI is the existing dual-pane layout; no navigation sidebar should be shown on first launch.
-- Create/show the Navigation Sidebar only after an explicit command such as `toggle_navigation_sidebar`.
-- Sidebar visibility may be persisted after the user toggles it.
+- The default UI is the existing dual-pane layout; no navigation tree pane should be shown on first launch.
+- Create/show the Navigation Tree Pane only after an explicit command such as `toggle_navigation_tree_pane` or compatible `toggle_navigation_sidebar`.
+- `Ctrl+B` is a visibility toggle: when showing the tree, reveal/select the current active file pane path without moving focus.
+- `focus_navigation_tree` / `Ctrl+Shift+B` shows the tree, reveals the last active file pane path, and moves focus to the tree.
+- Tree pane visibility may be persisted after the user toggles it.
+- The Navigation Tree Pane must be keyboard-focusable.
+- When visible, `Tab` / `Shift+Tab` cycles Tree, left file pane, and right file pane.
 - The folder tree must not recursively scan folders, drives, or network paths.
 - Folder tree roots should be cheap: favorites and available Windows drive roots.
 - Expanding a node may enumerate only direct child directories and must handle access errors quietly.
-- Current-path tree sync/highlighting is optional and should remain deferred unless it is cheap.
+- Current-path reveal should expand only the ancestors needed for the visible route and must not recursively scan.
+- First-pass tree actions are Go, Copy Path, Add Favorite, and Reveal.
+- Tree Delete, Move, Copy-to-pane, Rename, and New Folder are deferred until their semantics are explicitly designed.
+
+## Favorites Rule
+
+- Favorites are sorted alphabetically by label, then normalized path.
+- Favorites and History remain separate data sources.
+- History remains most-recent-first.
+- Missing favorite paths show a status message and must not crash.
+- Manual favorite reorder is intentionally not part of the first pass.
 
 ## Theme Recovery Rule
 
@@ -80,6 +124,7 @@ FORA-X is keyboard-first and compact by default. Future UI work should follow th
 - Unknown column ids should be ignored safely.
 - `full_name` and `full_path` are hidden by default to avoid duplicate Explorer-like views.
 - Reload column changes with the `reload_column_settings` command.
+- Header context-menu filters must have keyboard command equivalents such as `filter_by_name`, `filter_by_type`, `filter_by_size`, `filter_by_modified`, and `clear_column_filters`.
 
 ## Arrow Navigation Rule
 
@@ -99,6 +144,7 @@ FORA-X is keyboard-first and compact by default. Future UI work should follow th
 
 ## Mouse Selection Rule
 
+- Full-row selection is expected file-pane behavior.
 - File panes use `ExtendedSelection` mode.
 - **Plain click**: selects only the clicked item, resets anchor.
 - **Ctrl + click**: toggles the clicked item, preserves other selections.

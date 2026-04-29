@@ -5,12 +5,19 @@ This audit covers the v0.1.x release line. Builtin commands are registered by `f
 ## Release-Key Binding Decisions
 
 - `F3` remains `go_to_current_directory`.
+- `Alt+D` also opens `go_to_current_directory`.
 - `F6` remains `create_and_edit_file`.
 - `F8` remains `flat_view` for YSCommands-compatible behavior.
 - `Delete` is handled by the main window as delete-to-Recycle-Bin with confirmation behavior where available.
-- `Ctrl+L` remains `file_list`.
+- `Ctrl+E` enters the configurable Export Tool Mode.
+- `Ctrl+Shift+F` enters the configurable Filter Tool Mode.
+- `Ctrl+Shift+G` enters the configurable Git Tool Mode.
+- `file_list` and `tree_view` remain available from Export mode and the Command Palette, not high-frequency navigation shortcuts.
 - `Ctrl+Shift+P` opens the Command Palette.
-- `Ctrl+B` toggles the optional Navigation Sidebar.
+- `Ctrl+B` toggles the optional Navigation Tree Pane and reveals the current active file pane path without moving focus.
+- `Ctrl+Shift+B` shows/focuses the optional Navigation Tree Pane and reveals the last active file pane path.
+- `toggle_navigation_tree_pane` is the preferred command id for the optional keyboard-focusable Navigation Tree Pane. `toggle_navigation_sidebar` remains compatible.
+- Alt drive shortcuts are removed. Use `Shift+DriveLetter` for drive jumps.
 - Plain `Right` enters the focused directory.
 - Plain `Left` navigates back.
 - `Alt+Left` and `Alt+Right` remain directional move commands in the default settings.
@@ -22,6 +29,7 @@ This audit covers the v0.1.x release line. Builtin commands are registered by `f
 | `Tab` | `switch_pane` | - | navigation | settings |
 | `F2` | `rename_selected` | - | file operation | settings |
 | `F3` | `go_to_current_directory` | - | navigation | settings |
+| `Alt+D` | `go_to_current_directory` | - | navigation | settings |
 | `F6` | `create_and_edit_file` | - | file operation | settings |
 | `F7` | `create_directory` | - | file operation | settings |
 | `F8` | `flat_view` | - | view | settings |
@@ -30,13 +38,15 @@ This audit covers the v0.1.x release line. Builtin commands are registered by `f
 | `Ctrl+Left` | `copy_to_left_pane` | - | file operation | settings |
 | `Alt+Right` | `move_to_right_pane` | - | file operation | settings |
 | `Alt+Left` | `move_to_left_pane` | - | file operation | settings |
-| `Ctrl+T` | `tree_view` | - | external/report | settings |
-| `Ctrl+L` | `file_list` | - | external/report | settings |
+| `Ctrl+E` | Export Tool Mode | - | mode trigger | `tool_modes.json` |
+| `Ctrl+Shift+F` | Filter Tool Mode | - | mode trigger | `tool_modes.json` |
+| `Ctrl+Shift+G` | Git Tool Mode | - | mode trigger | `tool_modes.json` |
 | `Ctrl+G` | `go_to_path` | - | navigation | settings |
 | `Ctrl+Alt+P` | `open_terminal` | `{ "profile": "powershell" }` | external | settings |
 | `Ctrl+Alt+C` | `open_terminal` | `{ "profile": "cmd" }` | external | settings |
 | `Ctrl+Shift+P` | `show_command_palette` | - | command | settings |
 | `Ctrl+B` | `toggle_navigation_sidebar` | - | navigation | settings |
+| `Ctrl+Shift+B` | `focus_navigation_sidebar` | - | navigation | settings |
 | `Ctrl+Z` | `undo_last_plan_transaction` | - | plan/undo | settings |
 
 Additional direct key handling:
@@ -49,41 +59,163 @@ Additional direct key handling:
 | `Delete` | Delete selected item(s) to Recycle Bin path with confirmation behavior | file operation | builtin event handling |
 | `Left` | Go back | navigation | builtin event handling |
 | `Right` | Enter focused directory | navigation | builtin event handling |
-| `Shift+A–Z` | Navigate active pane to that drive root (e.g. `Shift+D` → `D:\`). Unavailable drives show a status message. Does not conflict with Alt drive shortcuts. | navigation | builtin event handling |
+| `Shift+A-Z` | Navigate active pane to that drive root (e.g. `Shift+D` -> `D:\`). Unavailable drives show a status message. Alt drive shortcuts are intentionally removed. | navigation | builtin event handling |
+
+## Tool Modes
+
+Tool Modes are JSON-configurable command groups stored at
+`%APPDATA%/FORA-X/Settings/tool_modes.json`. A mode has an id, label, trigger,
+and action keys that invoke registered command ids. Loading Tool Modes never
+executes commands; invalid actions are skipped with a warning/status message.
+
+Default Export mode:
+
+| Key | Action | Command |
+| --- | --- | --- |
+| `Ctrl+E` | Enter Export mode | mode trigger |
+| `L` | File List report | `file_list` |
+| `T` | Tree report | `tree_view` |
+| `P` | Copy selected paths | `copy_paths_to_clipboard` |
+| `N` | Copy selected names | `copy_names_to_clipboard` |
+| `Esc` | Cancel Export mode | - |
+
+`tree_view` is a text report/export command using `tree /a`; it is not the
+optional Navigation Sidebar folder tree.
+
+Default Filter mode:
+
+| Key | Action | Command |
+| --- | --- | --- |
+| `Ctrl+Shift+F` | Enter Filter mode | mode trigger |
+| `N` | Prompt for Name column filter | `filter_by_name` |
+| `T` | Prompt for Type column filter | `filter_by_type` |
+| `S` | Prompt for Size column filter | `filter_by_size` |
+| `M` | Prompt for Modified column filter | `filter_by_modified` |
+| `C` | Clear column filters | `clear_column_filters` |
+| `Esc` | Cancel Filter mode | - |
+
+Default Git mode:
+
+| Key | Action | Command |
+| --- | --- | --- |
+| `Ctrl+Shift+G` | Enter Git mode | mode trigger |
+| `C` | TortoiseGit Commit | `git_commit` |
+| `L` | TortoiseGit Log | `git_log` |
+| `D` | TortoiseGit Diff | `git_diff` |
+| `S` | TortoiseGit Status | `git_status` |
+| `A` | TortoiseGit Add | `git_add` |
+| `R` | TortoiseGit Revert | `git_revert` |
+| `U` | TortoiseGit Pull | `git_pull` |
+| `P` | TortoiseGit Push | `git_push` |
+| `Esc` | Cancel Git mode | - |
+
+Git mode uses curated `TortoiseGitProc.exe` launches. It does not import or
+enumerate the full Windows Explorer shell context menu.
+
+Use `reload_tool_modes` after editing `tool_modes.json`. Use
+`open_tool_mode_settings` to open the settings file.
+
+Action Bar items may use structured `keys` metadata, for example
+`{ "command": "go_to_current_directory", "label": "GoTo", "keys": ["Alt+D"] }`.
+The rendered hint is `[Alt+D] GoTo`, keeping hints closer to actual shortcuts.
+
+Items may also use `preferred_hint_key` to override the rendered key for compact
+modifier-state hints. For example, `"keys": ["Ctrl+Shift+F"], "preferred_hint_key": "F"`
+renders as `[F] Filter` when `Ctrl+Shift` is already held.
+
+## Action Bar Modifier Hints
+
+The Action Bar updates automatically when modifier keys are held:
+
+| Modifier | State | What shows |
+| --- | --- | --- |
+| (none) | `default` | Rename, GoTo, New File/Folder, VSCode, Terminal, Explorer |
+| `Ctrl` | `ctrl` | Copy→, ←Copy, Export, Tree |
+| `Alt` | `alt` | GoTo, SameDir, Move←, Move→, Props |
+| `Ctrl+Shift` | `ctrl+shift` | `[F] Filter`, `[G] Git`, `[P] Palette`, `[B] Tree` |
+| `Shift` alone | `shift` | Drive jump hints (dynamic, shows available drives) |
+
+`ctrl+shift` defaults are injected into existing user `action_bar.json` at load
+time if the section is absent, so existing installs receive these hints without
+reinstalling or deleting settings.
+
+Low-priority items (VSCode, Terminal, Explorer, Flat) are hidden automatically
+when the window is too narrow to show all hints. High-priority items (Rename,
+GoTo, New File, New Folder, active Tool Mode actions) remain visible.
+
+Entering a Tool Mode replaces the modifier hints with that mode's action hints.
+Releasing all modifiers or exiting the mode restores the default Action Bar.
+
+## Command Catalog
+
+Tool Mode actions can call any currently registered command id. Use
+`show_command_catalog` from the Command Palette for a quick in-app list, or
+`export_command_catalog` to write:
+
+- `%APPDATA%/FORA-X/CommandCatalog/commands.json`
+- `%APPDATA%/FORA-X/CommandCatalog/COMMANDS.md`
+
+The catalog is best-effort and includes command id, label, category,
+description, args, selection requirement, destructive flag, and Tool Mode safety
+flag when known. Dynamic plugin commands appear after they are registered.
 
 ### Go To Directory MRU History
 
-The `go_to_current_directory` (F3) dialog shows three sets of suggestions:
+The `go_to_current_directory` (`F3` or `Alt+D`) dialog shows three sets of suggestions:
 
 1. **Filesystem candidates** — children of the directory currently typed, prefix-matched (existing behavior).
 2. **Favorite candidates** — saved favorites whose label or path contains the typed text.
 3. **History candidates** — previously visited directories that contain the typed text as a case-insensitive substring (e.g. typing `fora` can surface `D:\Project\fora-x`).
 
-Successful navigation from the F3 dialog saves the destination to a local MRU list (max 50 entries, stored at `%APPDATA%/FORA-X/Settings/nav_history.json`). Only valid directories are saved; no secrets are stored.
+Successful navigation from the Go To Directory dialog saves the destination to a local MRU list (max 50 entries, stored at `%APPDATA%/FORA-X/Settings/nav_history.json`). Only valid directories are saved; no secrets are stored.
 
-### Optional Navigation Sidebar and Favorites
+### Favorites
 
-The default startup UI remains the normal dual-pane layout with no sidebar. Use
-`toggle_navigation_sidebar` from the Command Palette or `Ctrl+B` to create/show
-the optional left Navigation Sidebar. Toggling again hides it and restores the
-dual-pane feel.
-
-Favorites are stored as labels and paths at
+Favorites are core navigation data, not plugins. They are stored as ids, labels,
+and paths at
 `%APPDATA%/FORA-X/Settings/favorites.json`. They are not validated at startup.
 Command Palette favorite entries are generated dynamically, for example
 `★ FORA-X  D:\Project\fora-x`, and selecting one navigates only the active pane.
 Missing favorite paths show a status message instead of crashing.
 
-The sidebar contains favorites and available Windows drive roots. Folder
-children are loaded only when a node is expanded, and only direct child
-directories are enumerated.
+Favorites are deduplicated by normalized path and sorted deterministically by
+`label.casefold()`, then normalized path. Manual reorder is intentionally not
+implemented. History remains a separate MRU list; the Go To Directory prompt
+orders suggestions as current-directory matches, favorites, then history.
+
+### Optional Navigation Tree Pane
+
+The default startup UI remains the normal dual-pane layout with no tree pane.
+Use `toggle_navigation_tree_pane` or the compatible `toggle_navigation_sidebar`
+command from the Command Palette, or `Ctrl+B`, to create/show the optional left
+Navigation Tree Pane. Showing the tree reveals/selects the current active file
+pane path and keeps focus in the file pane. Use `focus_navigation_tree` or
+`Ctrl+Shift+B` to show/focus it directly.
+
+When visible, `Tab` / `Shift+Tab` cycles keyboard focus through Tree, left file
+pane, and right file pane. The tree contains favorites and available Windows
+drive roots. Folder children are loaded only when a node is expanded, and only
+direct child directories are enumerated.
+
+First-pass tree actions:
+
+- `Enter`: navigate the last active file pane to the selected folder.
+- `Space`: expand/collapse the selected tree item.
+- `C` / `copy_tree_selected_path`: copy selected folder path.
+- `F` / `add_tree_selected_to_favorites`: add selected folder to Favorites.
+- `R` / `reveal_tree_selected_in_explorer`: reveal selected folder in Explorer.
+- `Esc`: return focus to the last active file pane.
+
+Tree Delete, Move, Copy-to-pane, Rename, and New Folder operations are
+intentionally not exposed in this pass. The `tree_view` command remains a text
+report/export command and is distinct from the Navigation Tree Pane.
 
 ## Builtin Command Inventory
 
 | Command id | Description | Args | Category | Source |
 | --- | --- | --- | --- | --- |
 | `go_to_drive` | Navigate active pane to a drive if available. | `{ "drive": "C" }` | navigation | builtin |
-| `go_to_current_directory` | Show F3 GoTo directory prompt. | - | navigation | builtin |
+| `go_to_current_directory` | Show Go To Directory prompt (`F3` or `Alt+D`). | - | navigation | builtin |
 | `go_parent` / `go_up` | Navigate active pane to parent. | - | navigation | builtin |
 | `go_back` | Navigate pane history back. | - | navigation | builtin |
 | `go_forward` | Navigate pane history forward. | - | navigation | builtin |
@@ -94,17 +226,43 @@ directories are enumerated.
 | `enter_focused_directory` | Enter selected directory only. | - | navigation | builtin |
 | `reveal_in_explorer` | Reveal selected path in Explorer. | - | external | builtin |
 | `show_command_palette` / `command_palette` | Open Command Palette. Supports token-based fuzzy search. | - | command | builtin |
+| `show_command_catalog` | Show currently registered command ids and categories. | - | command | builtin |
+| `export_command_catalog` | Export command catalog JSON and Markdown. | - | command | builtin |
+| `open_command_catalog_folder` | Open `%APPDATA%/FORA-X/CommandCatalog`. | - | command | builtin |
+| `enter_tool_mode` | Enter a configured Tool Mode by `mode_id`. | `{ "mode_id": "export" }` | command | builtin |
+| `reload_tool_modes` | Reload `%APPDATA%/FORA-X/Settings/tool_modes.json`. | - | settings | builtin |
 | `toggle_navigation_sidebar` | Create/show or hide the optional left Navigation Sidebar. | - | navigation | builtin |
 | `focus_navigation_sidebar` | Show and focus the optional Navigation Sidebar. | - | navigation | builtin |
+| `toggle_navigation_tree_pane` | Create/show or hide the optional left Navigation Tree Pane. | - | navigation | builtin |
+| `focus_navigation_tree` | Show and focus the optional Navigation Tree Pane. | - | navigation | builtin |
+| `go_to_selected_tree_folder` | Navigate the last active file pane to the selected tree folder. | - | navigation | builtin |
+| `copy_tree_selected_path` | Copy the selected tree folder path. | - | navigation | builtin |
+| `add_tree_selected_to_favorites` | Add the selected tree folder to Favorites. | - | navigation | builtin |
+| `reveal_tree_selected_in_explorer` | Reveal the selected tree folder in Explorer. | - | navigation | builtin |
 | `add_current_directory_to_favorites` | Add the active pane directory to favorites with a label prompt. | - | navigation | builtin |
 | `remove_current_directory_from_favorites` | Remove the favorite matching the active pane directory. | - | navigation | builtin |
+| `rename_favorite` / `edit_favorite` | Rename a saved favorite label. | - | navigation | builtin |
+| `open_favorites_settings` | Open `favorites.json`. | - | settings | builtin |
 | `reload_favorites` | Reload favorites and dynamic Command Palette entries. | - | navigation | builtin |
 | `show_favorites` / `list_favorites` | Show saved favorite labels and paths. | - | navigation | builtin |
 | `show_about` | Show About dialog. | - | view | builtin |
 | `toggle_hidden_files` | Toggle hidden files. | - | view | builtin |
 | `toggle_sort_order` | Toggle sort order. | - | view | builtin |
 | `filter_pane` | Prompt and apply active pane filter. | - | filter | builtin |
+| `filter_by_name` | Prompt and apply Name column filter on the active pane. | - | filter | builtin |
+| `filter_by_type` | Prompt and apply Type column filter on the active pane. | - | filter | builtin |
+| `filter_by_size` | Prompt and apply Size column filter on the active pane. | - | filter | builtin |
+| `filter_by_modified` | Prompt and apply Modified column filter on the active pane. | - | filter | builtin |
+| `clear_column_filters` | Clear active pane column filters. | - | filter | builtin |
 | `clear_pane_filter` | Clear active pane filter. | - | filter | builtin |
+| `git_commit` | Launch TortoiseGit Commit for selected paths or current directory. | - | git | builtin |
+| `git_log` | Launch TortoiseGit Log for selected paths or current directory. | - | git | builtin |
+| `git_diff` | Launch TortoiseGit Diff for selected paths or current directory. | - | git | builtin |
+| `git_status` | Launch TortoiseGit repository status for selected paths or current directory. | - | git | builtin |
+| `git_add` | Launch TortoiseGit Add for selected paths or current directory. | - | git | builtin |
+| `git_revert` | Launch TortoiseGit Revert for selected paths or current directory. | - | git | builtin |
+| `git_pull` | Launch TortoiseGit Pull for selected paths or current directory. | - | git | builtin |
+| `git_push` | Launch TortoiseGit Push for selected paths or current directory. | - | git | builtin |
 | `focus_left_pane` | Focus left pane. | - | navigation | builtin |
 | `focus_right_pane` | Focus right pane. | - | navigation | builtin |
 | `create_directory` / `create_folder` | Create folder in active pane. | - | file operation | builtin |
@@ -202,6 +360,7 @@ directories are enumerated.
 | `open_action_bar_settings` | Open `action_bar.json`. | - | settings | builtin |
 | `open_terminal_profile_settings` | Open `terminal_profiles.json`. | - | settings | builtin |
 | `open_drive_shortcut_settings` | Open `drive_shortcuts.json`. | - | settings | builtin |
+| `open_tool_mode_settings` | Open `tool_modes.json`. | - | settings | builtin |
 | `open_column_settings` | Open `columns.json`. | - | settings | builtin |
 | `open_archive_provider_settings` | Open `archive_providers.json`. | - | settings | builtin |
 | `reload_settings` | Reload action bar, columns, archive providers, and key bindings. | - | settings | builtin |
