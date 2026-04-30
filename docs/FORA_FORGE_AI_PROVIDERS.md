@@ -85,6 +85,9 @@ Each provider may use an explicit `endpoint` override from
 - `open_ai_provider_settings`
 - `reload_ai_provider_settings`
 - `show_ai_policy_status`
+- `show_ai_provider_diagnostics`
+- `show_ai_env_var_help`
+- `copy_ai_env_var_setup_help`
 - `enable_external_ai`
 - `disable_external_ai`
 - `set_ai_mode_offline`
@@ -97,6 +100,17 @@ Provider selection is grouped as Offline / deterministic, Local-only, or
 External. External providers are omitted from the active selection path while
 policy blocks them. Enabling external AI requires an explicit confirmation and
 does not store API key values.
+
+`show_ai_provider_diagnostics` reports each provider as configured, missing an
+API key environment variable, disabled by policy, disabled at provider level,
+or selectable. It shows environment variable names only, never API key values.
+`show_ai_env_var_help` and `copy_ai_env_var_setup_help` give Windows setup
+guidance for User environment variables and remind users to restart FORA-X or
+their terminal after changing environment variables.
+
+`test_ai_provider` is explicit and user-triggered. It reports policy blocks,
+disabled providers, and missing environment variables before network provider
+construction. It does not run at startup and does not send file contents.
 
 ## Privacy Boundary
 

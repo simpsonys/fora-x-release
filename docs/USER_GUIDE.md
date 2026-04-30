@@ -127,6 +127,40 @@ Tree Delete, Move, Copy-to-pane, Rename, and New Folder are intentionally not av
 
 ---
 
+## Updating FORA-X
+
+### Installed (MSI) users
+
+FORA-X can check for updates automatically at startup (opt-in, enabled by default). When a newer version is available, a prompt appears with:
+
+- Current and latest version numbers
+- Release notes preview
+- A link to the release page
+
+**Buttons:**
+
+| Button | What it does |
+| --- | --- |
+| **Update** | Downloads the MSI and launches the installer interactively |
+| **Later** | Dismisses the prompt for this session |
+| **Skip this version** | Suppresses automatic prompts for that specific version |
+
+Updates are never installed silently. The installer opens as a separate window and you control the installation. FORA-X does not close automatically.
+
+To check for updates manually: open the Command Palette (`Ctrl+Shift+P`) and run `check_for_updates`.
+
+To change update behavior: run `open_update_settings` to edit `%APPDATA%/FORA-X/Settings/update_settings.json`.
+
+### Portable ZIP users
+
+Portable users should download the new portable ZIP from the release page manually. The app will show a link to the release page when an update is found.
+
+### Turning off automatic update checks
+
+Open `update_settings.json` (run `open_update_settings` from Command Palette) and set `check_for_updates_on_startup` to `false`.
+
+---
+
 ## Tips for Efficiency
 
 - **Ctrl+Shift+P** is your best friend. Use it to find any command you've forgotten the shortcut for.

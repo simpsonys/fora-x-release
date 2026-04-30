@@ -318,11 +318,14 @@ report/export command and is distinct from the Navigation Tree Pane.
 | `open_ai_provider_settings` | Open `ai_providers.json`. | - | forge/ai/settings | builtin |
 | `reload_ai_provider_settings` | Reload AI provider settings and show policy/default provider status. | - | forge/ai/settings | builtin |
 | `show_ai_policy_status` | Show offline/external policy state and provider list without secret values. | - | forge/ai/settings | builtin |
+| `show_ai_provider_diagnostics` | Show provider configured/missing/blocked/selectable status without secret values. | - | forge/ai/settings | builtin |
+| `show_ai_env_var_help` | Show Windows environment variable setup guidance for AI provider credentials. | - | forge/ai/settings | builtin |
+| `copy_ai_env_var_setup_help` | Copy AI credential setup guidance without API key values. | - | forge/ai/settings | builtin |
 | `enable_external_ai` | Confirm and enable external AI provider access without storing API keys. | - | forge/ai/settings | builtin |
 | `disable_external_ai` | Disable external AI and switch to offline mode. | - | forge/ai/settings | builtin |
 | `set_ai_mode_offline` | Set offline/company mode; no external API calls will be attempted. | - | forge/ai/settings | builtin |
 | `set_ai_mode_external_optional` | Confirm and set external-optional mode. | - | forge/ai/settings | builtin |
-| `test_ai_provider` | Check selected provider availability without exposing keys. | - | forge/ai/settings | builtin |
+| `test_ai_provider` | Check selected provider availability without exposing keys or sending file contents. | - | forge/ai/settings | builtin |
 | `import_forge_draft_from_json` | Paste/import generated DraftArtifact JSON and validate it. | - | forge | builtin |
 | `preview_forge_artifact` | Preview the current Forge draft. | - | forge | builtin |
 | `export_forge_artifact` | Export the current Forge draft through Profile/Pack/Plan paths. | - | forge | builtin |
@@ -369,6 +372,15 @@ report/export command and is distinct from the Navigation Tree Pane.
 | `reload_column_settings` | Reload column settings. | - | settings | builtin |
 | `reload_archive_provider_settings` | Reload archive provider settings. | - | settings | builtin |
 | `reset_column_settings` | Backup and reset column settings only. | - | settings | builtin |
+
+### Update commands
+
+| Command | Description | Category |
+| --- | --- | --- |
+| `check_for_updates` | Check for a newer FORA-X release now (manual, ignores interval). | update |
+| `install_latest_update` | Same as `check_for_updates` — fetches latest and shows update prompt. | update |
+| `open_update_settings` | Open `update_settings.json` in the default editor. | update |
+| `reload_update_settings` | Reload update settings from disk. | update |
 
 Plugin and compatibility commands may appear dynamically with source
 `plugin_v2` or `compatibility` depending on discovered plugin bundles.

@@ -138,6 +138,16 @@ For developers and power users, FORA-X supports advanced extensibility:
 - [Plugin API Documentation](./docs/FORA_PLUGIN_API_V2.md)
 - [Theme Creation](./docs/THEME_SYSTEM.md)
 
+## Updating FORA-X
+
+**MSI users**: FORA-X checks for updates at startup (opt-in). When a newer version is available, a prompt appears. Click **Update** to download and launch the installer, **Later** to be reminded next time, or **Skip this version** to suppress prompts for that release. Updates are never installed silently — you control the process.
+
+To check for updates manually: open the Command Palette (`Ctrl+Shift+P`) and run `check_for_updates`.
+
+To disable automatic checks: run `open_update_settings` from the Command Palette and set `check_for_updates_on_startup` to `false`.
+
+**Portable ZIP users**: Download the latest portable ZIP from the [Releases page](https://github.com/simpsonys/fora-x-release/releases) and extract it over the old folder.
+
 ## Troubleshooting
 
 - **Windows SmartScreen**: As FORA-X is a new application, Windows might show a warning. Click "More info" and "Run anyway".

@@ -109,6 +109,9 @@ Commands:
 - `open_ai_provider_settings`
 - `reload_ai_provider_settings`
 - `show_ai_policy_status`
+- `show_ai_provider_diagnostics`
+- `show_ai_env_var_help`
+- `copy_ai_env_var_setup_help`
 - `enable_external_ai`
 - `disable_external_ai`
 - `set_ai_mode_offline`
@@ -124,6 +127,11 @@ Provider selection separates Offline / deterministic, Local-only, and External
 providers. External providers are not offered as a normal active generation path
 while offline policy blocks them. `enable_external_ai` and
 `set_ai_mode_external_optional` require explicit user confirmation.
+
+Provider diagnostics and credential help show configured/missing status and
+required environment variable names without showing raw API key values.
+Availability checks are explicit user actions and stop at policy or missing
+credential failures before constructing network providers.
 
 See [FORA_FORGE_AI_PROVIDERS.md](FORA_FORGE_AI_PROVIDERS.md).
 

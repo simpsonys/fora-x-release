@@ -91,6 +91,8 @@ FORA-X is keyboard-first and compact by default. Future UI work should follow th
 - The folder tree must not recursively scan folders, drives, or network paths.
 - Folder tree roots should be cheap: favorites and available Windows drive roots.
 - Expanding a node may enumerate only direct child directories and must handle access errors quietly.
+- Drive root enumeration must not raise on `PermissionError`, `OSError`, or `FileNotFoundError`; inaccessible drives are silently skipped from the root list.
+- When expanding a drive that becomes inaccessible after enumeration, show a single child item with the message "Drive X:\ is unavailable or access is denied." and emit a status message; do not crash.
 - Current-path reveal should expand only the ancestors needed for the visible route and must not recursively scan.
 - First-pass tree actions are Go, Copy Path, Add Favorite, and Reveal.
 - Tree Delete, Move, Copy-to-pane, Rename, and New Folder are deferred until their semantics are explicitly designed.
@@ -153,6 +155,21 @@ FORA-X is keyboard-first and compact by default. Future UI work should follow th
 - File operations (copy, move, delete) must target all selected items, not just the current/focused row.
 - Clicking an inactive pane activates it before applying selection.
 - Range selection respects type-to-filter: only visible/filtered rows are included.
+
+## Update Flow Rule
+
+- Automatic update checks run after startup (3 s delay) only if `check_for_updates_on_startup` is `true` in `update_settings.json`.
+- Dev/pre-release versions skip automatic checks. Manual checks always run.
+- Startup check respects `check_interval_hours`; it does not check again if the interval has not elapsed since `last_checked_at`.
+- Network failures during startup checks show a non-fatal status bar message only. They never block the UI or show dialogs.
+- When a newer release is found, the update prompt shows current and latest version, a release notes preview, and a release page link.
+- **Update**: downloads the MSI to `%APPDATA%/FORA-X/Updates/` and launches `msiexec /i` interactively. Requires final confirmation before download.
+- **Later**: dismisses the prompt for this session. The same version is not prompted again until the next startup check or manual `check_for_updates`.
+- **Skip this version**: records `skipped_version` in settings. Automatic prompts for that version are suppressed. Manual `check_for_updates` still shows it.
+- Portable ZIP users see a guidance message and a link to the release page; no MSI install is attempted.
+- Updates are never installed silently. The user must confirm every step.
+- The MSI installer runs as a separate process; FORA-X does not close automatically.
+- Settings file: `%APPDATA%/FORA-X/Settings/update_settings.json`.
 
 ## Type-To-Filter Rule
 
