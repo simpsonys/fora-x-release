@@ -14,7 +14,7 @@ User intent
   -> optional conservative undo
 ```
 
-FORA Plan v1 is deterministic. It does not call external AI APIs and natural-language text never executes file operations directly.
+FORA Plan v1 is deterministic. It does not call external AI APIs and natural-language text never executes file operations directly. Natural-language plan creation first produces an inspectable plan draft artifact, then uses the existing dry-run preview and confirmation path.
 
 ## Core Principles
 
@@ -177,7 +177,8 @@ with `undo_status` such as `undone`, `blocked`, or `failed`.
 
 ## Commands
 
-- `plan_natural_language_operation`: prompt for intent, validate, preview, confirm, execute.
+- `create_file_plan_from_natural_language`: prompt for intent, create a plan draft artifact, preview it, and open a non-executing FORA Plan preview.
+- `plan_natural_language_operation`: prompt for intent, create a plan draft artifact, preview, confirm, and execute through the existing FORA Plan confirmation path.
 - `preview_current_plan`: show the current dry-run preview.
 - `execute_current_plan`: execute the current validated plan after confirmation.
 - `cancel_current_plan`: cancel/clear the current plan.

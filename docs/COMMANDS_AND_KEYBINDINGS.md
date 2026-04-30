@@ -310,6 +310,7 @@ report/export command and is distinct from the Navigation Tree Pane.
 | `forge_profile_from_current_settings` | Generate a `.fora-profile` draft from current settings. | - | forge | builtin |
 | `forge_plugin_prefix_rename_template` | Generate a safe sample `.fora-plugin` draft. | - | forge | builtin |
 | `forge_plan_from_text` | Generate a FORA Plan draft from intent text. | - | forge/plan | builtin |
+| `create_file_plan_from_natural_language` / `fora_plan_from_natural_language` | Create a validated FileOperationPlan draft artifact from natural language and preview it without execution. | - | plan/forge | builtin |
 | `generate_forge_artifact_with_ai` | Generate a Forge draft with an optional configured AI provider. | - | forge/ai | builtin |
 | `generate_plugin_with_ai` | Generate a plugin draft through Forge AI provider flow. | - | forge/ai | builtin |
 | `generate_theme_with_ai` | Generate a theme draft through Forge AI provider flow. | - | forge/ai | builtin |
@@ -335,7 +336,7 @@ report/export command and is distinct from the Navigation Tree Pane.
 | `copy_profile_generation_prompt` | Copy external-AI profile generation prompt. | - | forge | builtin |
 | `copy_plan_generation_prompt` | Copy external-AI plan generation prompt. | - | forge | builtin |
 | `open_forge_artifacts_folder` | Open `%APPDATA%/FORA-X/Forge`. | - | forge | builtin |
-| `plan_natural_language_operation` | Prompt for deterministic file operation intent, preview, confirm, and execute. | - | plan | builtin |
+| `plan_natural_language_operation` | Prompt for deterministic file operation intent, artifact-preview it, preview, confirm, and execute. | - | plan | builtin |
 | `preview_current_plan` | Show dry-run preview for the current plan. | - | plan | builtin |
 | `execute_current_plan` | Execute the current validated plan after confirmation. | - | plan | builtin |
 | `cancel_current_plan` | Cancel and clear the current plan. | - | plan | builtin |

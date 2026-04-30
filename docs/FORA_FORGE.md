@@ -53,7 +53,11 @@ packaged only after validation and is not executed by Forge.
 
 ### Plan
 
-`forge_plan_from_text` turns supported intent text into a FORA Plan draft. It does not execute automatically.
+`forge_plan_from_text` turns supported intent text into a FORA Plan draft. It
+does not execute automatically. The deterministic parser supports conservative
+daily-driver intents such as selected-file prefix/suffix rename, selected-file
+copy/move to the opposite pane when pane context is available, and simple
+create-folder/create-file plans.
 
 ## Pasted JSON Workflow
 
@@ -67,6 +71,27 @@ Use `import_forge_draft_from_json` to paste or select a generated DraftArtifact 
 - plugin permission declarations and high-risk warnings
 - Plugin API v2 permission names when generating plugins
 - FORA Plan rejection rules for generated plan intents
+
+## Artifact Preview
+
+Forge preview uses a shared review summary before export, install, import, or
+plan handoff. The preview shows artifact type, source, validation status,
+safe summary, warnings/errors, and available actions.
+
+Sources are reported as deterministic template, pasted JSON, mock/offline AI,
+local-only AI, or external AI. The preview does not show API key values or raw
+secret-like manifest values.
+
+Action guidance remains conservative:
+
+- Invalid artifacts can be previewed, rejected, or copied for diagnosis, but
+  install/apply/execute paths stay blocked.
+- Plan artifacts show operation count, affected paths, and denied/restricted
+  operations, then hand off to FORA Plan preview without execution.
+- Theme/profile/plugin artifacts show their manifest summary and only proceed
+  through existing validated Pack/Profile paths.
+- Plugin drafts are disabled by default; install does not load or execute plugin
+  code.
 
 ## External AI Prompt Workflow
 
