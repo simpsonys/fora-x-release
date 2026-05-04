@@ -391,3 +391,22 @@ Plugin and compatibility commands may appear dynamically with source
 - No default `Shift+Delete` permanent-delete binding is present.
 - `reset_all_settings_to_defaults` is intentionally not implemented for v0.1.x because user settings must not be deleted silently.
 - Some direct key handling is intentionally outside JSON settings to keep pane navigation responsive and compatible with filter editing.
+
+## Font Settings
+
+Open Command Palette with Ctrl+P, then choose Font Setting.
+
+Available actions:
+- Change Font: choose a font family with live preview.
+- Change Font Size: choose a font size with live preview.
+- Change Font Weight: choose Normal, Medium, or Bold if supported.
+- Increase Font Size: increase by 1 pt and save immediately.
+- Decrease Font Size: decrease by 1 pt and save immediately.
+- Reset Font Setting: restore system/default font settings.
+
+In picker views:
+- ↑ / ↓: preview the selected value immediately.
+- Enter: commit and persist.
+- Esc: cancel and restore the previous setting.
+
+Font preferences are stored in ppearance.json under the FORA-X settings directory.
