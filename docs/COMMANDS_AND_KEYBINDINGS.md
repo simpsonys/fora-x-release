@@ -48,6 +48,7 @@ This audit covers the v0.1.x release line. Builtin commands are registered by `f
 | `Ctrl+B` | `toggle_navigation_sidebar` | - | navigation | settings |
 | `Ctrl+Shift+B` | `focus_navigation_sidebar` | - | navigation | settings |
 | `Ctrl+Z` | `undo_last_plan_transaction` | - | plan/undo | settings |
+| `Ctrl+Shift+C` | `clipboard_mode` | - | mode trigger | settings |
 
 Additional direct key handling:
 
@@ -111,6 +112,23 @@ Default Git mode:
 
 Git mode uses curated `TortoiseGitProc.exe` launches. It does not import or
 enumerate the full Windows Explorer shell context menu.
+
+Default Clipboard mode:
+
+| Key | Action | Command |
+| --- | --- | --- |
+| `Ctrl+Shift+C` | Enter Clipboard Mode | mode trigger |
+| `C` | Copy text content | `copy_file_text_to_clipboard` |
+| `P` | Copy full path | `copy_paths_to_clipboard` |
+| `N` | Copy file name | `copy_names_to_clipboard` |
+| `R` | Copy relative path | `copy_selected_relative_path` |
+| `L` | Copy selected list | `copy_paths_to_clipboard` |
+| `M` | Copy Markdown link | `copy_selected_markdown_link` |
+| `Esc` | Exit Clipboard Mode | `exit_tool_mode` |
+
+The direct `copy_file_text_to_clipboard` command also remains available from the
+Command Palette without entering Clipboard Mode. Normal `Ctrl+C` file-copy behavior
+is not affected.
 
 Use `reload_tool_modes` after editing `tool_modes.json`. Use
 `open_tool_mode_settings` to open the settings file.
@@ -278,6 +296,10 @@ report/export command and is distinct from the Navigation Tree Pane.
 | `open_folder_in_vscode` | Open active path in VS Code when `code` exists. | - | external | builtin |
 | `copy_paths_to_clipboard` | Copy selected paths. | - | clipboard | builtin |
 | `copy_names_to_clipboard` | Copy selected names. | - | clipboard | builtin |
+| `clipboard_mode` | Enter Clipboard Mode (`Ctrl+Shift+C`). Exposes C/P/N/R/L/M clipboard actions. | - | clipboard | builtin |
+| `copy_file_text_to_clipboard` | Copy text content of selected file to clipboard. Decodes UTF-8 and CP949. Rejects folders, binary files, and files over 2 MB. Also available as `C` inside Clipboard Mode. | - | clipboard | builtin |
+| `copy_selected_relative_path` | Copy the relative path of the selected item (relative to active pane directory). Single selection only. | - | clipboard | builtin |
+| `copy_selected_markdown_link` | Copy a Markdown link `[name](<rel-path>)` for the selected file. Single selection only. | - | clipboard | builtin |
 | `compress_selected` | Open compression dialog. | - | archive | builtin |
 | `compress_selected_to_zip` | Compress selected item(s) to ZIP. | - | archive | builtin |
 | `compress_selected_to_7z` | Compress selected item(s) to 7z when provider exists. | - | archive | builtin |
