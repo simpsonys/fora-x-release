@@ -17,6 +17,7 @@ When you first open FORA-X, you'll see a clean, efficient dual-pane interface:
 
 - **Left and Right Panes**: Two independent file lists side-by-side.
 - **Active Pane**: The pane you are currently working in. It is highlighted with a gold/amber border.
+- **Single/Dual Layout**: Use `Alt+1` for one active pane or `Alt+2` to restore both panes.
 - **Path Bar**: Shows the current directory of each pane.
 - **Bottom Action Bar**: Quick hints for common commands (F2-F10).
 - **Status Bar**: Shows messages about your last action or current state.
@@ -32,6 +33,7 @@ FORA-X is designed to keep your hands on the keyboard:
 - **Left Arrow**: Go back in your navigation history.
 - **Backspace**: Go to the parent folder (if no search filter is active).
 - **Tab**: Switch focus between the left and right panes.
+- **Alt+1 / Alt+2**: Switch between single-pane and dual-pane layouts.
 - **F3** or **Alt+D**: Open the **Go To Directory** prompt. Start typing a path or favorite name and press Enter.
 - **Shift + Drive Letter**: Jump directly to a drive root (e.g., `Shift+C` for C:\).
 - **Ctrl+B**: Toggle the optional keyboard-focusable Navigation Tree Pane (Folder Tree and Favorites).
@@ -62,7 +64,7 @@ FORA-X is designed to keep your hands on the keyboard:
 
 ## Command Palette
 
-Press **Ctrl+Shift+P** to open the Command Palette. 
+Press **Ctrl+Shift+P** to open the Command Palette.
 
 This is the central hub for discovering features. Just start typing what you want to do (e.g., "theme", "plugin", "settings"), and FORA-X will show you matching commands. This is often the fastest way to run advanced tools.
 
@@ -105,6 +107,8 @@ The labels at the bottom correspond to your function keys:
 | `Ctrl+E` | Export mode |
 | `Ctrl+Shift+F` | Filter mode |
 | `Ctrl+Shift+G` | Git mode |
+| `Alt+1` | Single-pane layout |
+| `Alt+2` | Dual-pane layout |
 | `Delete` | Delete to Recycle Bin |
 | `Ctrl+Right/Left` | Copy to other pane |
 | `Alt+Right/Left` | Move to other pane |
@@ -119,6 +123,7 @@ FORA-X stores your personal configuration in:
 `%APPDATA%\FORA-X\Settings`
 
 - `key_bindings.json`: Customize your shortcuts.
+- `layout_settings.json`: Configure startup layout and explicit path/shell-open layout.
 - `favorites.json`: Your saved locations.
 - `action_bar.json`: Customize the bottom buttons.
 

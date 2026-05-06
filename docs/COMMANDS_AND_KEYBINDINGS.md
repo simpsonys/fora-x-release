@@ -16,6 +16,8 @@ This audit covers the v0.1.x release line. Builtin commands are registered by `f
 - `Ctrl+Shift+P` opens the Command Palette.
 - `Ctrl+B` toggles the optional Navigation Tree Pane and reveals the current active file pane path without moving focus.
 - `Ctrl+Shift+B` shows/focuses the optional Navigation Tree Pane and reveals the last active file pane path.
+- `Alt+1` switches to single-pane layout.
+- `Alt+2` switches to dual-pane layout.
 - `toggle_navigation_tree_pane` is the preferred command id for the optional keyboard-focusable Navigation Tree Pane. `toggle_navigation_sidebar` remains compatible.
 - Alt drive shortcuts are removed. Use `Shift+DriveLetter` for drive jumps.
 - Plain `Right` enters the focused directory.
@@ -44,6 +46,8 @@ This audit covers the v0.1.x release line. Builtin commands are registered by `f
 | `Ctrl+G` | `go_to_path` | - | navigation | settings |
 | `Ctrl+Alt+P` | `open_terminal` | `{ "profile": "powershell" }` | external | settings |
 | `Ctrl+Alt+C` | `open_terminal` | `{ "profile": "cmd" }` | external | settings |
+| `Alt+1` | `view_single_pane` | - | view | settings |
+| `Alt+2` | `view_dual_pane` | - | view | settings |
 | `Ctrl+Shift+P` | `show_command_palette` | - | command | settings |
 | `Ctrl+B` | `toggle_navigation_sidebar` | - | navigation | settings |
 | `Ctrl+Shift+B` | `focus_navigation_sidebar` | - | navigation | settings |
@@ -132,6 +136,45 @@ is not affected.
 
 Use `reload_tool_modes` after editing `tool_modes.json`. Use
 `open_tool_mode_settings` to open the settings file.
+
+## Adaptive Pane Layout
+
+FORA-X starts in dual-pane mode by default, but the layout can now be changed
+without destroying either pane's model, path, selection, or history state.
+
+Command Palette commands:
+
+- `view_single_pane` — `View: Single Pane`
+- `view_dual_pane` — `View: Dual Pane`
+- `toggle_pane_layout` — `View: Toggle Single/Dual Pane`
+
+Default shortcuts:
+
+- `Alt+1`: single-pane layout
+- `Alt+2`: dual-pane layout
+
+In single-pane layout, the active pane remains visible and the other pane is
+hidden. `Tab` can still switch the active pane; FORA-X swaps which pane is
+visible instead of recreating pane state. Returning to dual-pane layout shows
+both panes again.
+
+Layout defaults are stored in
+`%APPDATA%/FORA-X/Settings/layout_settings.json`:
+
+- `default_mode`: startup default when session layout restore is disabled.
+- `restore_last_mode`: whether normal startup restores the last layout mode.
+- `shell_open_mode`: layout used when FORA-X is launched with an explicit path.
+
+Startup path policy:
+
+- `fora.exe <path>` and `fora.exe --open <path>` open the explicit path.
+- Explicit paths override stale session pane paths.
+- Directory paths open that directory.
+- File paths open the parent folder and select the file when possible.
+- Invalid paths fall back safely to normal startup/session behavior.
+
+This is not Windows Explorer hijacking. Registry context menu registration,
+`Win+E`, and `explorer.exe` replacement are out of scope for this phase.
 
 Action Bar items may use structured `keys` metadata, for example
 `{ "command": "go_to_current_directory", "label": "GoTo", "keys": ["Alt+D"] }`.
