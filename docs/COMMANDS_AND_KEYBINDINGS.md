@@ -25,7 +25,8 @@ This audit covers the v0.1.x release line. Builtin commands are registered by `f
 - Alt drive shortcuts are removed. Use `Shift+DriveLetter` for drive jumps.
 - Plain `Right` enters the focused directory.
 - Plain `Left` navigates back.
-- `Alt+Left` and `Alt+Right` remain directional move commands in the default settings.
+- `Alt+Left` and `Alt+Right` are navigation history back/forward (not file move).
+- File move commands (`move_to_left_pane`, `move_to_right_pane`) have no default shortcut; available from Command Palette.
 
 ## Default Key Bindings
 
@@ -35,14 +36,19 @@ This audit covers the v0.1.x release line. Builtin commands are registered by `f
 | `F2` | `rename_selected` | - | file operation | settings |
 | `F3` | `go_to_current_directory` | - | navigation | settings |
 | `Alt+D` | `go_to_current_directory` | - | navigation | settings |
+| `Ctrl+L` | `go_to_current_directory` | - | navigation | settings |
 | `F6` | `create_and_edit_file` | - | file operation | settings |
 | `F7` | `create_directory` | - | file operation | settings |
 | `F8` | `flat_view` | - | view | settings |
 | `F9` | `open_terminal` | `{ "profile": "default" }` | external | settings |
 | `Ctrl+Right` | `copy_to_right_pane` | - | file operation | settings |
 | `Ctrl+Left` | `copy_to_left_pane` | - | file operation | settings |
-| `Alt+Right` | `move_to_right_pane` | - | file operation | settings |
-| `Alt+Left` | `move_to_left_pane` | - | file operation | settings |
+| `Alt+Left` | `go_back` | - | navigation | settings |
+| `Alt+Right` | `go_forward` | - | navigation | settings |
+| `Alt+Up` | `go_parent` | - | navigation | settings |
+| `Alt+Down` | `open_selected` | - | navigation | settings |
+| `Ctrl+Tab` | `show_recent_locations` | - | navigation | settings |
+| `Ctrl+I` | `show_context_info` | - | navigation | settings |
 | `Ctrl+E` | Export Tool Mode | - | mode trigger | `tool_modes.json` |
 | `Ctrl+Shift+F` | Filter Tool Mode | - | mode trigger | `tool_modes.json` |
 | `Ctrl+Shift+G` | Git Tool Mode | - | mode trigger | `tool_modes.json` |
