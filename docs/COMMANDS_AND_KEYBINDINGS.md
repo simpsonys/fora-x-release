@@ -14,6 +14,9 @@ This audit covers the v0.1.x release line. Builtin commands are registered by `f
 - `Ctrl+Shift+G` enters the configurable Git Tool Mode.
 - `file_list` and `tree_view` remain available from Export mode and the Command Palette, not high-frequency navigation shortcuts.
 - `Ctrl+Shift+P` opens the Command Palette.
+- `configure_shortcut` opens the interactive shortcut binding wizard from the Command Palette.
+- Safe unassigned modified shortcuts, including `Ctrl+letter`, can prompt to bind the pressed chord when focus is in the active file pane.
+- `shortcut_remove` and `shortcut_reset` start by capturing the shortcut to remove/reset and edit only user overrides.
 - `Ctrl+B` toggles the optional Navigation Tree Pane and reveals the current active file pane path without moving focus.
 - `Ctrl+Shift+B` shows/focuses the optional Navigation Tree Pane and reveals the last active file pane path.
 - `Alt+1` switches to single-pane layout.
@@ -55,6 +58,21 @@ This audit covers the v0.1.x release line. Builtin commands are registered by `f
 | `Ctrl+Shift+C` | `clipboard_mode` | - | mode trigger | settings |
 
 Additional direct key handling:
+
+Run `configure_shortcut` from the Command Palette to choose a visible command,
+press a shortcut, and replace an existing assignment when confirmed. The wizard
+updates `key_bindings.json`, reloads key bindings, and refreshes displayed
+shortcut hints without restarting FORA-X.
+
+When `prompt_unassigned_shortcuts` is enabled in
+`%APPDATA%/FORA-X/Settings/shortcut_settings.json`, pressing a safe unassigned
+modified chord in the active file pane can offer to bind that chord. Eligible
+automatic prompts include `Alt+letter`, `Ctrl+letter`, `Ctrl+Shift+letter`,
+`Ctrl+Alt+letter`, `Ctrl+Alt+Shift+letter`, and modified function keys. Plain
+typing keys, navigation keys, text inputs, active overlays, tool modes, and
+auto-repeat are intentionally ignored. Use `shortcut_remove` to press and
+remove a user-defined binding, and `shortcut_reset` to press and reset a binding
+back to its default effective shortcut by clearing user overrides.
 
 | Key | Behavior | Category | Source |
 | --- | --- | --- | --- |
@@ -179,6 +197,8 @@ This is not Windows Explorer hijacking. Registry context menu registration,
 Action Bar items may use structured `keys` metadata, for example
 `{ "command": "go_to_current_directory", "label": "GoTo", "keys": ["Alt+D"] }`.
 The rendered hint is `[Alt+D] GoTo`, keeping hints closer to actual shortcuts.
+FORA-X hydrates these labels from the effective keymap when Action Bar settings
+reload, so shortcut add/remove/reset changes are reflected without restart.
 
 Items may also use `preferred_hint_key` to override the rendered key for compact
 modifier-state hints. For example, `"keys": ["Ctrl+Shift+F"], "preferred_hint_key": "F"`
@@ -287,6 +307,9 @@ report/export command and is distinct from the Navigation Tree Pane.
 | `enter_focused_directory` | Enter selected directory only. | - | navigation | builtin |
 | `reveal_in_explorer` | Reveal selected path in Explorer. | - | external | builtin |
 | `show_command_palette` / `command_palette` | Open Command Palette. Supports token-based fuzzy search. | - | command | builtin |
+| `configure_shortcut` / `bind_shortcut` | Choose a visible command and assign a keyboard shortcut, with conflict confirmation. | - | settings | builtin |
+| `shortcut_remove` | Press a shortcut and remove its user-defined override. | - | settings | builtin |
+| `shortcut_reset` | Press a shortcut and reset that binding to the default definition when a user override exists. | - | settings | builtin |
 | `show_command_catalog` | Show currently registered command ids and categories. | - | command | builtin |
 | `export_command_catalog` | Export command catalog JSON and Markdown. | - | command | builtin |
 | `open_command_catalog_folder` | Open `%APPDATA%/FORA-X/CommandCatalog`. | - | command | builtin |
@@ -433,7 +456,7 @@ report/export command and is distinct from the Navigation Tree Pane.
 | `open_column_settings` | Open `columns.json`. | - | settings | builtin |
 | `open_archive_provider_settings` | Open `archive_providers.json`. | - | settings | builtin |
 | `reload_settings` | Reload action bar, columns, archive providers, and key bindings. | - | settings | builtin |
-| `reload_action_bar` | Reload action bar settings. | - | settings | builtin |
+| `reload_action_bar` | Reload action bar settings and hydrate shortcut hints from the effective keymap. | - | settings | builtin |
 | `reload_key_bindings` | Reload key bindings. | - | settings | builtin |
 | `reload_column_settings` | Reload column settings. | - | settings | builtin |
 | `reload_archive_provider_settings` | Reload archive provider settings. | - | settings | builtin |

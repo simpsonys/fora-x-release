@@ -127,9 +127,18 @@ FORA-X stores your personal configuration in:
 - `favorites.json`: Your saved locations.
 - `action_bar.json`: Customize the bottom buttons.
 
+You can also run `configure_shortcut` from the Command Palette to choose a
+command and press a new shortcut. Conflicts ask for confirmation before the old
+assignment is replaced.
+Safe unassigned modified shortcuts, including safe `Ctrl+letter` chords, can
+also offer to bind the pressed chord when focus is in the active file pane. This
+prompt can be disabled in `shortcut_settings.json`. Use `shortcut_remove` and
+`shortcut_reset` from the Command Palette to press a shortcut first, then remove
+or reset only its user-defined override.
+
 Action Bar hints are structured so displayed keys are intended to match the
-configured shortcuts. `Alt+D` is Go To Directory; drive jumps use
-`Shift + Drive Letter`.
+configured shortcuts and refresh after shortcut add/remove/reset. `Alt+D` is Go
+To Directory; drive jumps use `Shift + Drive Letter`.
 
 You can quickly open this folder by typing "Open settings folder" in the Command Palette.
 
