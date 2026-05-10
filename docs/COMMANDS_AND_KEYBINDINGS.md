@@ -49,6 +49,8 @@ This audit covers the v0.1.x release line. Builtin commands are registered by `f
 | `Alt+Down` | `open_selected` | - | navigation | settings |
 | `Ctrl+Tab` | `show_recent_locations` | - | navigation | settings |
 | `Ctrl+I` | `show_context_info` | - | navigation | settings |
+| `Ctrl+C` | `copy_to_clipboard` | - | clipboard | settings |
+| `Ctrl+V` | `paste_from_clipboard` | - | clipboard | settings |
 | `Ctrl+E` | Export Tool Mode | - | mode trigger | `tool_modes.json` |
 | `Ctrl+Shift+F` | Filter Tool Mode | - | mode trigger | `tool_modes.json` |
 | `Ctrl+Shift+G` | Git Tool Mode | - | mode trigger | `tool_modes.json` |
@@ -208,7 +210,9 @@ reload, so shortcut add/remove/reset changes are reflected without restart.
 
 Items may also use `preferred_hint_key` to override the rendered key for compact
 modifier-state hints. For example, `"keys": ["Ctrl+Shift+F"], "preferred_hint_key": "F"`
-renders as `[F] Filter` when `Ctrl+Shift` is already held.
+renders as `[F] Filter` when `Ctrl+Shift` is already held. Modifier prefixes
+(e.g., `Ctrl+`, `Alt+`) are automatically stripped from these compact hints,
+and arrow keys are rendered using unicode glyphs (`←`, `→`, `↑`, `↓`).
 
 ## Action Bar Modifier Hints
 
@@ -368,6 +372,8 @@ report/export command and is distinct from the Navigation Tree Pane.
 | `open_folder_in_vscode` | Open active path in VS Code when `code` exists. | - | external | builtin |
 | `copy_paths_to_clipboard` | Copy selected paths. | - | clipboard | builtin |
 | `copy_names_to_clipboard` | Copy selected names. | - | clipboard | builtin |
+| `paste_from_clipboard` | Paste file(s) or image from clipboard. | - | clipboard | builtin |
+| `paste_clipboard_image` | Save clipboard image as timestamped JPEG file. | - | clipboard | builtin |
 | `clipboard_mode` | Enter Clipboard Mode (`Ctrl+Shift+C`). Exposes C/P/N/R/L/M clipboard actions. | - | clipboard | builtin |
 | `copy_file_text_to_clipboard` | Copy text content of selected file to clipboard. Decodes UTF-8 and CP949. Rejects folders, binary files, and files over 2 MB. Also available as `C` inside Clipboard Mode. | - | clipboard | builtin |
 | `copy_selected_relative_path` | Copy the relative path of the selected item (relative to active pane directory). Single selection only. | - | clipboard | builtin |
