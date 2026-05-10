@@ -292,10 +292,10 @@ First-pass tree actions:
 
 - `Enter`: navigate the last active file pane to the selected folder.
 - `Space`: expand/collapse the selected tree item.
-- `C` / `copy_tree_selected_path`: copy selected folder path.
-- `F` / `add_tree_selected_to_favorites`: add selected folder to Favorites.
-- `R` / `reveal_tree_selected_in_explorer`: reveal selected folder in Explorer.
-- `Esc`: return focus to the last active file pane.
+- `copy_paths_to_clipboard`: copy selected tree folder path(s), using the shared clipboard command.
+- `add_tree_selected_to_favorites`: add selected folder to Favorites.
+- `reveal_tree_selected_in_explorer`: reveal selected folder in Explorer.
+- `Esc`: clear the active tree filter when present; otherwise return focus to the last active file pane.
 
 Tree Delete, Move, Copy-to-pane, Rename, and New Folder operations are
 intentionally not exposed in this pass. The `tree_view` command remains a text
@@ -371,6 +371,7 @@ report/export command and is distinct from the Navigation Tree Pane.
 | `open_terminal` | Open configured terminal profile in active path. | `{ "profile": "default" }` | external | builtin |
 | `open_folder_in_vscode` | Open active path in VS Code when `code` exists. | - | external | builtin |
 | `copy_paths_to_clipboard` | Copy selected paths. | - | clipboard | builtin |
+| `copy_markdown_path_list_to_clipboard` / `copy_markdown_path_list` | Copy selected paths as a Markdown bullet list. Uses paths relative to the active pane when possible. | - | clipboard | builtin |
 | `copy_names_to_clipboard` | Copy selected names. | - | clipboard | builtin |
 | `paste_from_clipboard` | Paste file(s) or image from clipboard. | - | clipboard | builtin |
 | `paste_clipboard_image` | Save clipboard image as timestamped JPEG file. | - | clipboard | builtin |
