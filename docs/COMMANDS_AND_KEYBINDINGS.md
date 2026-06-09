@@ -194,10 +194,16 @@ Layout defaults are stored in
 Startup path policy:
 
 - `fora.exe <path>` and `fora.exe --open <path>` open the explicit path.
+- `fora://open?path=...` opens the decoded path.
 - Explicit paths override stale session pane paths.
 - Directory paths open that directory.
 - File paths open the parent folder and select the file when possible.
 - Invalid paths fall back safely to normal startup/session behavior.
+
+Instance mode is stored in `%APPDATA%/FORA-X/Settings/instance_settings.json`.
+The default is `single`: later launches forward their path/protocol request to
+the existing window and exit. Run `set_instance_mode_multi` to allow independent
+processes, or `set_instance_mode_single` to restore the default.
 
 This is not Windows Explorer hijacking. Registry context menu registration,
 `Win+E`, and `explorer.exe` replacement are out of scope for this phase.
@@ -374,7 +380,7 @@ report/export command and is distinct from the Navigation Tree Pane.
 | `copy_markdown_path_list_to_clipboard` / `copy_markdown_path_list` | Copy selected paths as a Markdown bullet list. Uses paths relative to the active pane when possible. | - | clipboard | builtin |
 | `copy_names_to_clipboard` | Copy selected names. | - | clipboard | builtin |
 | `paste_from_clipboard` | Paste file(s) or image from clipboard. | - | clipboard | builtin |
-| `paste_clipboard_image` | Save clipboard image as timestamped JPEG file. | - | clipboard | builtin |
+| `paste_clipboard_image` | Save clipboard image as `YYMMDD-HHMMSS-current-folder.jpg`, using `ClipImage` fallback and collision suffixes. | - | clipboard | builtin |
 | `clipboard_mode` | Enter Clipboard Mode (`Ctrl+Shift+C`). Exposes C/P/N/R/L/M clipboard actions. | - | clipboard | builtin |
 | `copy_file_text_to_clipboard` | Copy text content of selected file to clipboard. Decodes UTF-8 and CP949. Rejects folders, binary files, and files over 2 MB. Also available as `C` inside Clipboard Mode. | - | clipboard | builtin |
 | `copy_selected_relative_path` | Copy the relative path of the selected item (relative to active pane directory). Single selection only. | - | clipboard | builtin |
@@ -468,6 +474,9 @@ report/export command and is distinct from the Navigation Tree Pane.
 | `open_tool_mode_settings` | Open `tool_modes.json`. | - | settings | builtin |
 | `open_column_settings` | Open `columns.json`. | - | settings | builtin |
 | `open_archive_provider_settings` | Open `archive_providers.json`. | - | settings | builtin |
+| `set_instance_mode_single` | Use one FORA-X process and forward later launch requests to it. | - | settings | builtin |
+| `set_instance_mode_multi` | Allow independent FORA-X processes on later launches. | - | settings | builtin |
+| `toggle_instance_mode` | Toggle the persisted single/multi instance mode. | - | settings | builtin |
 | `reload_settings` | Reload action bar, columns, archive providers, and key bindings. | - | settings | builtin |
 | `reload_action_bar` | Reload action bar settings and hydrate shortcut hints from the effective keymap. | - | settings | builtin |
 | `reload_key_bindings` | Reload key bindings. | - | settings | builtin |

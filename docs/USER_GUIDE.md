@@ -166,6 +166,11 @@ Open `update_settings.json` (run `open_update_settings` from Command Palette) an
 - **Ctrl+Shift+P** is your best friend. Use it to find any command you've forgotten the shortcut for.
 - Use **Ctrl+Z** to undo your last move or rename operation if you made a mistake.
 - Most dialogs in FORA-X are designed to be dismissed with **Esc** or confirmed with **Enter**.
+- Pasting a clipboard image with **Ctrl+V** saves it as
+  `YYMMDD-HHMMSS-current-folder.jpg`; repeated pastes add `-02`, `-03`, and so on.
+- FORA-X starts in single-instance mode. Use `set_instance_mode_multi` or
+  `set_instance_mode_single` from the Command Palette to change later-launch behavior.
+- During Rename, **Ctrl+Left / Ctrl+Right** moves by word inside the filename editor.
 
 ## Icon
 

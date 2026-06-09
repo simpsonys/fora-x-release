@@ -50,7 +50,8 @@ FORA-X is designed to keep your hands on the keyboard:
 - **Delete**: Move selected items to the Recycle Bin (requires confirmation).
 - **Ctrl + Right/Left Arrow**: Copy selected items to the other pane.
 - **Alt + Right/Left Arrow**: Move selected items to the other pane.
-- **Ctrl+C / Ctrl+V**: Standard clipboard copy and paste.
+- **Ctrl+C / Ctrl+V**: Standard clipboard copy and paste. Clipboard images are
+  saved as `YYMMDD-HHMMSS-current-folder.jpg` with collision-safe suffixes.
 
 ## Favorites and Fast Access
 
@@ -124,8 +125,13 @@ FORA-X stores your personal configuration in:
 
 - `key_bindings.json`: Customize your shortcuts.
 - `layout_settings.json`: Configure startup layout and explicit path/shell-open layout.
+- `instance_settings.json`: Configure single-instance (default) or multi-instance startup.
 - `favorites.json`: Your saved locations.
 - `action_bar.json`: Customize the bottom buttons.
+
+Use `set_instance_mode_single`, `set_instance_mode_multi`, or
+`toggle_instance_mode` from the Command Palette. In single-instance mode, a
+later launch forwards its folder/file/`fora://` request to the existing window.
 
 You can also run `configure_shortcut` from the Command Palette to choose a
 command and press a new shortcut. Conflicts ask for confirmation before the old
