@@ -1,4 +1,4 @@
-﻿# FORA-X Version 0.4.26
+﻿# FORA-X Version 0.4.28
 
 This is a public release of FORA-X.
 
@@ -8,14 +8,14 @@ Release notes are under development.
 
 ## Installation
 
-- **Portable ZIP**: Unzip `FORA-X-0.4.26-portable-win64.zip` and run `FORA-X.exe`.
-- **MSI Installer**: Run `FORA-X-0.4.26-win64.msi`.
+- **Portable ZIP**: Unzip `FORA-X-0.4.28-portable-win64.zip` and run `FORA-X.exe`.
+- **MSI Installer**: Run `FORA-X-0.4.28-win64.msi`.
 
 ## Checksums
 
 ```
-SHA256: 1BB1D32661C03EEF7C5FE28EE76344045C4B45194E97AD41B4A6D8A5FF4B44EB 	FORA-X-0.4.26-portable-win64.zip
-SHA256: DEC29B6179728EBA536655579779A171E0859F408C70B2B900018444013CA3F9 	FORA-X-0.4.26-win64.msi
+SHA256: 04503068F6F304F0E6688A2F03E166600870DD1E256B0F9BC40DC7C5CBF763DB 	FORA-X-0.4.28-portable-win64.zip
+SHA256: D57DE1755106C7CD73BE45403447A7F840928712D47368729C9EC7704EB6AC22 	FORA-X-0.4.28-win64.msi
 
 ```
 
